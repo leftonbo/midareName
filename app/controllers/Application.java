@@ -1,8 +1,9 @@
 package controllers;
 
+import models.Letter;
+import mt.Sfmt;
 import play.*;
 import play.mvc.*;
-
 import views.html.*;
 
 public class Application extends Controller {
@@ -14,7 +15,30 @@ public class Application extends Controller {
         return ok(index.render());
     }
     public static Result calc() {
-        return TODO;
+    	String[] results = new String[10];
+		Sfmt rnd = new Sfmt();
+		
+		// 生成するぞ
+    	for (int i=0; i < results.length; i++) {
+    		int letnum = 0;
+    		Letter last = null;
+    		results[i] = "";
+    		do {
+    			if (letnum == 0) {
+    				// 1文字目
+    				last = Letter.getStartLetter();
+    				results[i] += last.letter;
+    			} else {
+    				// 2文字目以降   todo
+    				last = Letter.getNextLetter(last);
+    				results[i] += last.letter;
+    			}
+    			letnum ++;
+    		} while (// 一定確率で止まる
+    				rnd.NextUnif() >= getRandomStop(letnum) * last.endOccurMult
+    				);
+    	}
+        return ok(calcResult.render(results));
     }
 
     public static Result letterList() {
@@ -39,4 +63,18 @@ public class Application extends Controller {
     public static Result letterCarryWrite(long id) {
         return TODO;
     }
+    
+    
+    // =======================================================
+    
+    /**
+     * その文字数で止まる確率
+     * @param num 現在の文字数
+     * @return 止まる確率
+     */
+    public static final float getRandomStop(int num) {
+    	if (num <= 1) return 0.0f;
+    	return (float)(1 - Math.pow(0.8, num-1));
+    }
+    
 }

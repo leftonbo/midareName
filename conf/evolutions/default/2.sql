@@ -179,7 +179,7 @@ insert into letter (id,letter,start_frequency,end_occur_mult)
     values ( 309, 'ヶ',  0.0, 1.0);
     
 insert into letter (id,letter,start_frequency,end_occur_mult)
-    values ( 318, 'ッ',  2.0, 1.0);
+    values ( 318, 'ッ',  0.0, 1.0);
     
 insert into letter (id,letter,start_frequency,end_occur_mult)
     values ( 336, 'ャ',  0.0, 1.0);
@@ -200,3 +200,4 @@ insert into letter_carry (id,letter_id,next_id,frequency) values (1,  1, 2,  10.
 # --- !Downs
 
 delete from letter;
+delete from letter_carry;

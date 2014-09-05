@@ -5,6 +5,7 @@ import java.util.*;
 import javax.persistence.*;
 
 import mt.Sfmt;
+import play.Logger;
 import play.db.ebean.*;
 import play.data.validation.Constraints;
 
@@ -42,14 +43,50 @@ public class Letter extends Model {
 		return find.all();
 	}
 	
+	/**
+	 * 名前の先頭に来る文字を取得
+	 * 
+	 * @return 重みランダムで得られた文字
+	 */
 	public static final Letter getStartLetter() {
+		List<Letter> letters = find.where().gt("startFrequency", 0).findList();
+		Sfmt rnd = new Sfmt();
+		float sum = 0f;
+
+		for (Letter l : letters) {
+			float f = l.startFrequency;
+			l.startFrequency += sum;
+			sum += f;
+		}
+		float weight = (float) (rnd.NextUnif() * sum);
+		
+		// 2分法じゃないか！
+		int lower = -1;
+		int upper = letters.size();
+		while (upper - lower > 1) {
+			int index = (lower + upper) / 2;
+			if (weight < letters.get(index).startFrequency) {
+				upper = index;
+			} else {
+				lower = index;
+			}
+		}
+		
+		return letters.get(upper);
+	}
+
+	/**
+	 * 次は何が来るかな？
+	 * @param current 現在の文字
+	 * @return 次の文字
+	 */
+	public static final Letter getNextLetter(Letter current) {
+		// TODO LetterCarryを使う
+		// 現在はランダム文字のみ
 		List<Letter> letters = find.all();
 		Sfmt rnd = new Sfmt();
-		float sum;
-		for (Letter l : letters) {
-			
-		}
-		return null;
+		int upper = letters.size();
+		
+		return letters.get(rnd.NextInt(upper));
 	}
-	
 }

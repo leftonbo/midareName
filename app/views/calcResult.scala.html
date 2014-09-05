@@ -1,0 +1,21 @@
+@(results:Array[String])
+
+@main("") {
+
+    <h1>@Application.title</h1>
+    
+    <div class="version">version: @Application.version</div>
+    
+    <ui>
+        @for(r <- results) {
+        	<li>
+        		@r
+        	</li>
+        }
+    </ui>
+
+    <div class="mainact">
+    	<a class="btn btn-primary"" href="@routes.Application.calc()">Go!</a>
+    </div>
+    
+}
