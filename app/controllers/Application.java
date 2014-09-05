@@ -6,9 +6,15 @@ import play.mvc.*;
 import views.html.*;
 
 public class Application extends Controller {
+	
+	public static final String title = "乱れネーミング";
+	public static final String Version = "0.10";
 
     public static Result index() {
-        return ok(index.render("Your new application is ready."));
+        return ok(index.render());
+    }
+    public static Result calc() {
+        return TODO;
     }
 
     public static Result letterList() {

@@ -5,6 +5,9 @@
 # Home page
 GET     /                           controllers.Application.index()
 
+# Process
+GET     /calc                       controllers.Application.calc()
+
 # Letter definition
 GET     /letters                    controllers.Application.letterList()
 GET     /letters/new                controllers.Application.letterNew()
@@ -12,6 +15,7 @@ POST    /letters                    controllers.Application.letterWriteNew()
 GET     /letters/:id                controllers.Application.letterSelectList(id:Long)
 
 # LetterCarry Edit
+GET     /carry/new                  controllers.Application.letterCarryNew()
 GET     /carry/:id                  controllers.Application.letterCarryEdit(id:Long)
 POST    /carry/:id                  controllers.Application.letterCarryWrite(id:Long)
 
