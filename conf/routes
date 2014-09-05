@@ -16,6 +16,7 @@ GET     /letters/:id                controllers.Application.letterSelectList(id:
 
 # LetterCarry Edit
 GET     /carry/new                  controllers.Application.letterCarryNew()
+POST    /carry                      controllers.Application.letterCarryWriteNew()
 GET     /carry/:id                  controllers.Application.letterCarryEdit(id:Long)
 POST    /carry/:id                  controllers.Application.letterCarryWrite(id:Long)
 

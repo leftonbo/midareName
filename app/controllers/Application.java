@@ -56,6 +56,9 @@ public class Application extends Controller {
     public static Result letterCarryNew() {
         return TODO;
     }
+    public static Result letterCarryWriteNew() {
+        return TODO;
+    }
     public static Result letterCarryEdit(long id) {
         return TODO;
     }

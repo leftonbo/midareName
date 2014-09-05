@@ -16,7 +16,7 @@ public class LetterCarry extends Model {
 	private static final long serialVersionUID = 3443882811971341882L;
 
 	@Id
-	public long id;			// ID
+	public Long id;			// ID
 
     @Constraints.Required(message="Letters are required.")
     @ManyToOne

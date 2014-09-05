@@ -1,0 +1,35 @@
+@(lForm: Form[LetterCarry])
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(bootstrapInput.render) }
+
+@main("New LC") {
+
+    <h1>New LC</h1>
+
+    @if(flash.containsKey("danger")) {
+        <div class="alert alert-danger">
+            <strong>Oops!</strong> @flash.get("danger")
+        </div>
+    }
+
+    @form(routes.Application.letterCarryWriteNew(), 'class -> "form-horizontal") {
+
+        <fieldset>
+            @select(
+                lForm("letter.id"), 
+                options(Letter.options), 
+                '_label -> "Letter", '_default -> "-- Choose --",
+                '_showConstraints -> false
+            )
+
+        </fieldset>
+
+        <div class="actions">
+            <input type="submit" value="Save" class="btn btn-primary">
+        </div>
+
+    }
+
+}

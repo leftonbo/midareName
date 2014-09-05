@@ -17,7 +17,7 @@ public class Letter extends Model {
 	private static final long serialVersionUID = -3229399137347456774L;
 
 	@Id
-	public long id;			// ID
+	public Long id;			// ID
 
     @Constraints.Required(message="Letters are required.")
 	public String letter;	// Letter
@@ -37,6 +37,18 @@ public class Letter extends Model {
 	 */
     public static final Finder<Long,Letter> find =
     	new Finder<Long,Letter>(Long.class, Letter.class);
+    
+    /**
+     * for selector
+     * @return
+     */
+    public static Map<String,String> options() {
+        LinkedHashMap<String,String> options = new LinkedHashMap<String,String>();
+        for(Letter l: Letter.find.orderBy("letter").findList()) {
+            options.put(l.id.toString(), l.letter);
+        }
+        return options;
+    }
 
 	public static final List<Letter> all() {
 		return find.all();
