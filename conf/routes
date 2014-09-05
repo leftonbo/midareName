@@ -8,9 +8,12 @@ GET     /                           controllers.Application.index()
 # Letter definition
 GET     /letters                    controllers.Application.letterList()
 GET     /letters/new                controllers.Application.letterNew()
-POST    /letters                    controllers.Application.letterWrite()
-GET     /letters/:str                controllers.Application.letterSelectList(str:String)
-GET     /letters/:id                 controllers.Application.letterEdit(id:Long)
+POST    /letters                    controllers.Application.letterWriteNew()
+GET     /letters/:id                controllers.Application.letterSelectList(id:Long)
+
+# LetterCarry Edit
+GET     /carry/:id                  controllers.Application.letterCarryEdit(id:Long)
+POST    /carry/:id                  controllers.Application.letterCarryWrite(id:Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
