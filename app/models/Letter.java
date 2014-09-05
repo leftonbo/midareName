@@ -4,6 +4,7 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import mt.Sfmt;
 import play.db.ebean.*;
 import play.data.validation.Constraints;
 
@@ -39,6 +40,16 @@ public class Letter extends Model {
 
 	public static final List<Letter> all() {
 		return find.all();
+	}
+	
+	public static final Letter getStartLetter() {
+		List<Letter> letters = find.all();
+		Sfmt rnd = new Sfmt();
+		float sum;
+		for (Letter l : letters) {
+			
+		}
+		return null;
 	}
 	
 }
