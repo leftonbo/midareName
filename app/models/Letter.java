@@ -5,7 +5,6 @@ import java.util.*;
 import javax.persistence.*;
 
 import play.db.ebean.*;
-import play.db.ebean.Model.Finder;
 import play.data.validation.Constraints;
 
 @Entity
@@ -19,22 +18,16 @@ public class Letter extends Model {
 	@Id
 	public long id;			// ID
 
-    @Constraints.Required
+    @Constraints.Required(message="Letters are required.")
 	public String letter;	// Letter
 
     @Constraints.Required
-	public String next;		// Next Letter
+    @Constraints.Min(0)
+    public float startFrequency = 10.0f;
 
     @Constraints.Required
-    @Constraints.Min(1)
-	public int numLimit;
-    
-    /**
-     * Define default values
-     */
-    public Letter() {
-    	numLimit = 2;
-    }
+    @Constraints.Min(0)
+    public float endOccurMult = 1.0f;
     
     // ==========
 
