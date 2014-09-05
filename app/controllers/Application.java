@@ -8,7 +8,7 @@ import views.html.*;
 public class Application extends Controller {
 	
 	public static final String title = "乱れネーミング";
-	public static final String Version = "0.10";
+	public static final String version = "0.01";
 
     public static Result index() {
         return ok(index.render());
