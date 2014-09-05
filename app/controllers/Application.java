@@ -25,11 +25,11 @@ public class Application extends Controller {
     		do {
     			if (letnum == 0) {
     				// 1文字目
-    				last = Letter.getStartLetter();
+    				last = Letter.getStartLetter(rnd);
     				results[i] += last.letter;
     			} else {
     				// 2文字目以降   todo
-    				last = Letter.getNextLetter(last);
+    				last = Letter.getNextLetter(rnd, last);
     				results[i] += last.letter;
     			}
     			letnum ++;

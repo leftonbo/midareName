@@ -44,12 +44,11 @@ public class Letter extends Model {
 	
 	/**
 	 * 名前の先頭に来る文字を取得
-	 * 
+	 * @param rnd メルセンヌさん
 	 * @return 重みランダムで得られた文字
 	 */
-	public static final Letter getStartLetter() {
+	public static final Letter getStartLetter(Sfmt rnd) {
 		List<Letter> letters = find.where().gt("startFrequency", 0).findList();
-		Sfmt rnd = new Sfmt();
 		float sum = 0f;
 
 		for (Letter l : letters) {
@@ -73,19 +72,25 @@ public class Letter extends Model {
 		
 		return letters.get(upper);
 	}
+	public static final Letter getStartLetter() {
+		return getStartLetter(new Sfmt());
+	}
 
 	/**
 	 * 次は何が来るかな？
+	 * @param rnd メルセンヌさん
 	 * @param current 現在の文字
 	 * @return 次の文字
 	 */
-	public static final Letter getNextLetter(Letter current) {
+	public static final Letter getNextLetter(Sfmt rnd, Letter current) {
 		// TODO LetterCarryを使う
 		// 現在はランダム文字のみ
 		List<Letter> letters = find.all();
-		Sfmt rnd = new Sfmt();
 		int upper = letters.size();
 		
 		return letters.get(rnd.NextInt(upper));
+	}
+	public static final Letter getNextLetter(Letter current) {
+		return getNextLetter(new Sfmt(), current);
 	}
 }
