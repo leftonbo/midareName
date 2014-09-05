@@ -5,7 +5,6 @@ import java.util.*;
 import javax.persistence.*;
 
 import mt.Sfmt;
-import play.Logger;
 import play.db.ebean.*;
 import play.data.validation.Constraints;
 
