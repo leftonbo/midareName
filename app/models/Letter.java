@@ -5,6 +5,7 @@ import java.util.*;
 import javax.persistence.*;
 
 import mt.Sfmt;
+import play.Play;
 import play.db.ebean.*;
 import play.data.validation.Constraints;
 
@@ -98,9 +99,39 @@ public class Letter extends Model {
 		// TODO LetterCarryを使う
 		// 現在はランダム文字のみ
 		List<Letter> letters = find.all();
-		int upper = letters.size();
+		float sum = 0f;
+
+		for (Letter l : letters) {
+			// 面倒だから使い回し
+			l.startFrequency = 0.5f;
+			// Carry がある場合はそっちにする
+			List<LetterCarry> lnx = 
+					LetterCarry.find.where().eq("letter", current).
+					eq("next", l).findList();
+			if (lnx.size() >= 1) {
+				play.Logger.debug("aie");
+				l.startFrequency = lnx.get(0).frequency;
+			}
+			
+			float f = l.startFrequency;
+			l.startFrequency += sum;
+			sum += f;
+		}
+		float weight = (float) (rnd.NextUnif() * sum);
 		
-		return letters.get(rnd.NextInt(upper));
+		// 2分法じゃないか！
+		int lower = -1;
+		int upper = letters.size();
+		while (upper - lower > 1) {
+			int index = (lower + upper) / 2;
+			if (weight < letters.get(index).startFrequency) {
+				upper = index;
+			} else {
+				lower = index;
+			}
+		}
+		
+		return letters.get(upper);
 	}
 	public static final Letter getNextLetter(Letter current) {
 		return getNextLetter(new Sfmt(), current);
