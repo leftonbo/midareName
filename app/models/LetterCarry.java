@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 import play.db.ebean.*;
 import play.data.validation.Constraints;
+import play.data.validation.ValidationError;
 
 @Entity
 public class LetterCarry extends Model {
@@ -30,6 +31,17 @@ public class LetterCarry extends Model {
     @Constraints.Min(0)
     public float frequency = 10.0f;
     
+    public List<ValidationError> validate() {
+        List<ValidationError> errors = new ArrayList<ValidationError>();
+        if (letter.id == null) {
+            errors.add(new ValidationError("letter", "Letters are required."));
+        }
+        if (next.id == null) {
+            errors.add(new ValidationError("next", "Next Letters are required."));
+        }
+        return errors.isEmpty() ? null : errors;
+    }
+    
     // ==========
 
 	/**
@@ -39,7 +51,7 @@ public class LetterCarry extends Model {
     	new Finder<Long,LetterCarry>(Long.class, LetterCarry.class);
 
 	public static final List<LetterCarry> all() {
-		return find.all();
+		return find.orderBy("next").orderBy("letter").findList();
 	}
 	
 }

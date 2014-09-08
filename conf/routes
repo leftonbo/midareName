@@ -15,10 +15,11 @@ POST    /letters                    controllers.Application.letterWriteNew()
 GET     /letters/:id                controllers.Application.letterSelectList(id:Long)
 
 # LetterCarry Edit
-GET     /carry/new                  controllers.Application.letterCarryNew()
+GET     /carry                      controllers.Application.letterCarryNew()
 POST    /carry                      controllers.Application.letterCarryWriteNew()
 GET     /carry/:id                  controllers.Application.letterCarryEdit(id:Long)
 POST    /carry/:id                  controllers.Application.letterCarryWrite(id:Long)
+GET     /carry/:id/del              controllers.Application.letterCarryDelete(id:Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

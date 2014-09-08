@@ -1,4 +1,4 @@
-@(lForm: Form[LetterCarry])
+@(lForm: Form[LetterCarry],  lcList: List[LetterCarry])
 
 @import helper._
 
@@ -8,6 +8,11 @@
 
     <h1>New LC</h1>
 
+    @if(flash.containsKey("success")) {
+        <div class="alert alert-success">
+            <strong>Done!</strong> @flash.get("success")
+        </div>
+    }
     @if(flash.containsKey("danger")) {
         <div class="alert alert-danger">
             <strong>Oops!</strong> @flash.get("danger")
@@ -23,6 +28,15 @@
                 '_label -> "Letter", '_default -> "-- Choose --",
                 '_showConstraints -> false
             )
+            
+            @select(
+                lForm("next.id"), 
+                options(Letter.options), 
+                '_label -> "Next", '_default -> "-- Choose --",
+                '_showConstraints -> false
+            )
+            
+            @inputText(lForm("frequency"), '_label -> "Frequency", '_help -> "default:0.1")
 
         </fieldset>
 
@@ -31,5 +45,31 @@
         </div>
 
     }
+    
+    <h2>Currently availables:</h2>
+    
+    <div  class="container">
+    <table class="carrytable table table-striped">
+        <tbody>
+        @for(l <- lcList) {
+            <tr>
+            <td>
+	            @l.letter.letter
+            </td>
+            <td>
+	            @l.next.letter
+            </td>
+            <td>
+            	@l.frequency
+            </td>
+            <td>
+            	<a href="@routes.Application.letterCarryEdit(l.id)" class="text-primary">Edit</a>
+            	<a href="@routes.Application.letterCarryDelete(l.id)" class="text-danger">Remove</a>
+            </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    </div>
 
 }

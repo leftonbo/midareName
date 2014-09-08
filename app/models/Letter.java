@@ -5,7 +5,6 @@ import java.util.*;
 import javax.persistence.*;
 
 import mt.Sfmt;
-import play.Play;
 import play.db.ebean.*;
 import play.data.validation.Constraints;
 
@@ -30,6 +29,10 @@ public class Letter extends Model {
     @Constraints.Required
     @Constraints.Min(0)
     public float endOccurMult = 1.0f;
+    
+    public String toString() {
+    	return letter;
+    }
     
     // ==========
 
@@ -96,26 +99,30 @@ public class Letter extends Model {
 	 * @return 次の文字
 	 */
 	public static final Letter getNextLetter(Sfmt rnd, Letter current) {
-		// TODO LetterCarryを使う
-		// 現在はランダム文字のみ
 		List<Letter> letters = find.all();
 		float sum = 0f;
 
-		for (Letter l : letters) {
+		Iterator<Letter> it = letters.iterator();
+		while (it.hasNext()) {
+			Letter l = it.next();
 			// 面倒だから使い回し
-			l.startFrequency = 0.5f;
+			l.startFrequency = 0.1f;
 			// Carry がある場合はそっちにする
 			List<LetterCarry> lnx = 
 					LetterCarry.find.where().eq("letter", current).
 					eq("next", l).findList();
 			if (lnx.size() >= 1) {
-				play.Logger.debug("aie");
 				l.startFrequency = lnx.get(0).frequency;
 			}
 			
+			// freq = 0 はリストからさくじょ
 			float f = l.startFrequency;
-			l.startFrequency += sum;
-			sum += f;
+			if (f == 0) {
+				it.remove();
+			} else {
+				l.startFrequency += sum;
+				sum += f;
+			}
 		}
 		float weight = (float) (rnd.NextUnif() * sum);
 		

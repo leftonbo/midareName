@@ -1,7 +1,13 @@
 package controllers;
 
+import static play.data.Form.form;
+
+import java.util.*;
+
 import models.Letter;
+import models.LetterCarry;
 import mt.Sfmt;
+import play.data.Form;
 import play.mvc.*;
 import views.html.*;
 
@@ -54,13 +60,80 @@ public class Application extends Controller {
     }
 
     public static Result letterCarryNew() {
-        return TODO;
-    }
-    public static Result letterCarryWriteNew() {
-        return TODO;
+        Form<LetterCarry> lForm = form(LetterCarry.class).fill(
+        		new LetterCarry()
+        );
+        List<LetterCarry> lcl = LetterCarry.all();
+        return ok(
+            letcarryNewForm.render(lForm, lcl)
+        );
     }
     public static Result letterCarryEdit(long id) {
-        return TODO;
+        Form<LetterCarry> lForm = form(LetterCarry.class).fill(
+        	LetterCarry.find.byId(id)
+        );
+        List<LetterCarry> lcl = LetterCarry.all();
+        return ok(
+            letcarryNewForm.render(lForm, lcl)
+        );
+    }
+    public static Result letterCarryWriteNew() {
+    	// 登録するよ
+        Form<LetterCarry> lForm = form(LetterCarry.class).bindFromRequest();
+
+        if(lForm.hasErrors()) {
+        	// 変な値あったよ
+        	if (lForm.hasGlobalErrors()) {
+    	        flash("danger", lForm.globalError().message());
+        	} else {
+    	        flash("danger", "Some entries has invalid value.");
+        	}
+	        List<LetterCarry> lcl = LetterCarry.all();
+            return badRequest(letcarryNewForm.render(lForm, lcl));
+        }
+        
+        // 多重登録チェック
+        boolean updateflag = false;
+        Long updateID = 0L;
+    	List<LetterCarry> lnx = 
+				LetterCarry.find.where().eq("letter", lForm.get().letter).
+				eq("next", lForm.get().next).findList();
+    	if (lnx.size() >= 1) {
+    		// 上書きフラグ発生
+	        updateflag = true;
+	        updateID = lnx.get(0).id;
+    	}
+    	
+    	if (updateflag) {
+        	// 上書き！
+    		lForm.get().update(updateID);
+	        flash("success", "Existed role has been changed.");
+	        //flash("success", "Existed role '" + lForm.get().letter.toString() + " -> " +
+	        //		lForm.get().next.toString() + "' has been changed.");
+    	} else {
+	        // 登録！
+	        lForm.get().save();
+	        flash("success", "Role has been created.");
+	        //flash("success", "Role '" + lForm.get().letter.toString() + " -> " +
+	        //		lForm.get().next.toString() + "' has been created.");
+    	}
+        
+        // 次々と登録できるようにしておく
+        List<LetterCarry> lcl = LetterCarry.all();
+        return ok(
+            letcarryNewForm.render(lForm, lcl)
+        );
+    }
+    public static Result letterCarryDelete(long id) {
+        Form<LetterCarry> lForm = form(LetterCarry.class).fill(
+        	LetterCarry.find.byId(id)
+        );
+        LetterCarry.find.ref(id).delete();
+        flash("success", "Role has been deleted.");
+        List<LetterCarry> lcl = LetterCarry.all();
+        return ok(
+            letcarryNewForm.render(lForm, lcl)
+        );
     }
     public static Result letterCarryWrite(long id) {
         return TODO;
