@@ -20,7 +20,7 @@ public class Application extends Controller {
         return ok(index.render());
     }
     public static Result calc() {
-    	String[] results = new String[16];
+    	String[] results = new String[10];
 		Sfmt rnd = new Sfmt();
 		
 		// 生成するぞ
